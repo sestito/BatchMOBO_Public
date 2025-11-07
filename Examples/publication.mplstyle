@@ -1,0 +1,35 @@
+### FIGURE
+figure.figsize: 3.543, 2.1143
+figure.subplot.left: 0.12
+figure.subplot.right: 0.97
+figure.subplot.top: 0.95
+figure.subplot.bottom: 0.17
+
+### LEGEND
+legend.fontsize: 7
+
+### TICKS
+xtick.labelsize: 7
+ytick.labelsize: 7
+xtick.minor.visible: True
+ytick.minor.visible: True
+xtick.direction: in
+ytick.direction: in
+xtick.top: True
+ytick.right: True
+
+
+### FONTS
+font.size: 7
+text.usetex: False
+
+### AXES
+axes.labelsize: 7
+axes.prop_cycle: cycler('color', ['a6cee3','1b9e77','d95f02','7570b3'])
+axes.xlim: [0, 5]
+
+### FRAME
+legend.framealpha: 1
+legend.facecolor: 1
+legend.edgecolor: 0
+
