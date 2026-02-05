@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 # CONSTANTS
-export_file = "output.xlsx"
+export_file = "outputChomp.xlsx"
 export_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), export_file)
 
 data = pd.read_excel(export_file)
@@ -20,7 +20,7 @@ def identify_row(row):
     return s[:-1] # Remove last character
 
 def return_data(row):
-    titles = ['Pareto Points', 'DOS', 'IHD']
+    titles = ['Pareto Points', 'MOS', 'IHD']
     data = []
     for title in titles:
         data.append(row[title])
@@ -59,7 +59,7 @@ data = np.array(all_data)
 #fname = os.path.join(os.path.dirname(os.path.abspath(__file__)), fname)
 #f = open(fname, "w")
 
-titles = ['Pareto Points', 'DOS', 'IHD']
+titles = ['Pareto Points', 'MOS', 'IHD']
 
 st = "Method,BatchSize,Test,nParameters,nObjectives,Property,Minimum,Maximum,Average,StandardDeviation"
 all_analyzed_data = []
@@ -93,9 +93,9 @@ for i in range(len(all_identifiers)):
 
 df = pd.DataFrame(data=all_analyzed_data, columns=st.split(','))
 
-df["Test"] = pd.Categorical(df["Test"], ["ZDT1", "ZDT2", "ZDT3", "FON", "DTLZ2", "WeldedBeam"])
+df["Test"] = pd.Categorical(df["Test"], ["ZDT1", "ZDT2", "ZDT3", "FON", "DTLZ2"])
 df = df.sort_values(by=["Method", "BatchSize", "Test","nParameters", "nObjectives"])
-df = df.replace('WeldedBeam', 'Beam')
+
 
 export_file = "AnalyzedData_Sorted.xlsx"
 export_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), export_file)

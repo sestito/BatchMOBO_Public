@@ -3,3 +3,4 @@ from .sequential import Sequential
 from .penalty import Penalty
 from .qualitymetric import QualityMetric
 from .penaltyqualitymetric import PenaltyQualityMetric
+from .qEHVI import qEHVI

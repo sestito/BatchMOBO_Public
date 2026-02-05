@@ -88,6 +88,7 @@ df = pd.DataFrame(data, columns= ['Method', 'Number of Batch Samples', 'Test Nam
 df.loc[df['Method'] == 'QualityMetricIHDMOS', 'Method'] = 'QM'
 df.loc[df['Method'] == 'PenaltyQualityMetricIHDMOS', 'Method'] = 'QM'
 df.loc[df['Method'] == 'PenaltyEIMe', 'Method'] = 'EIMe'
+df.loc[df['Test Name'] == 'WeldedBeam', 'Test Name'] = 'Beam'
 
 metrics = ['Pareto Points', 'DOS', 'IHD']
 Tests = ['ZDT1', 'ZDT2', 'ZDT3', 'FON']
@@ -106,7 +107,7 @@ for test in ['ZDT1', 'ZDT2', 'ZDT3', 'FON']:
         data = []
 
         # Go through each of the methods
-        for method in ['EIMe', 'QM', 'Ensemble']:
+        for method in ['EIMe', 'QM', 'Ensemble', 'qEHVI']:
             df_method = df_test.loc[df_test['Method'] == method]
 
             # Go through each batch
@@ -119,16 +120,71 @@ for test in ['ZDT1', 'ZDT2', 'ZDT3', 'FON']:
         fig.subplots_adjust(left=0.12, right=.97, top=0.90, bottom= 0.15)
         ax = plt.subplot(111)
 
-        bp = plot_bp(ax, data, ['1', '2', '3', '1', '2', '3', '1', '2', '3'])
+        bp = plot_bp(ax, data, ['1', '2', '3', '1', '2', '3', '1', '2', '3', '1', '2', '3'])
 
         format_plot(bp, ax)
 
         ax.set_ylabel(metric)
-        plt.title('   EIMe                    QM                  Ensemble')
+        plt.title('      EIMe             QM            Ensemble       qEHVI     ')
         plt.xlabel('Batch Size')
 
         ax.axvline(3.5, color = 'k', linestyle='--', linewidth = 1)
         ax.axvline(6.5, color = 'k', linestyle='--', linewidth = 1)
+        ax.axvline(9.5, color = 'k', linestyle='--', linewidth = 1)
+
+        export_file = export_prefix + '_' + test + '_' + metric
+
+
+        export_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), export_folder, export_file)
+        savefig(export_file + '.png', dpi=1000)
+
+        plt.close()
+
+#test = 'Beam'
+
+for test in ['Beam']:
+    for metric in ['Pareto Points', 'DOS', 'IHD']:
+        #metric = 'Pareto Points'
+
+        # Get everything by a specific test name
+        df_test = df.loc[df['Test Name'] == test]
+
+        data = []
+
+        # Go through each of the methods
+        for method in ['EIMe', 'QM', 'Ensemble', 'qEHVI']:
+            df_method = df_test.loc[df_test['Method'] == method]
+
+            # Go through each batch
+            if method == 'qEHVI':
+                batches = [1]
+            else:
+                batches = [1, 2, 3]
+
+            for batch in batches:
+                df_batch = df_method.loc[df_method['Number of Batch Samples'] == batch]
+                data.append(np.array(df_batch[metric]))
+
+
+        fig = figure()
+        fig.subplots_adjust(left=0.12, right=.97, top=0.90, bottom= 0.15)
+        ax = plt.subplot(111)
+
+        bp = plot_bp(ax, data, ['1', '2', '3', '1', '2', '3', '1', '2', '3', '1'])
+
+        format_plot(bp, ax)
+
+        ax.set_ylabel(metric)
+        plt.title(
+                    '         EIMe                 QM               Ensemble   qEHVI',
+                    loc='left'
+                )
+        
+        plt.xlabel('Batch Size')
+
+        ax.axvline(3.5, color = 'k', linestyle='--', linewidth = 1)
+        ax.axvline(6.5, color = 'k', linestyle='--', linewidth = 1)
+        ax.axvline(9.5, color = 'k', linestyle='--', linewidth = 1)
 
         export_file = export_prefix + '_' + test + '_' + metric
 
